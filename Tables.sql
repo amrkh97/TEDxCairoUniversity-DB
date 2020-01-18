@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS members (
     userPassword VARCHAR(64) DEFAULT 'asdf1234', #Default password -> SHA256
     firstName VARCHAR(100) DEFAULT 'John',
     lastName VARCHAR(100) DEFAULT 'Doe',
-    photo TEXT,
+    photo VARCHAR(500),
     mobileNumber VARCHAR(11),
     email varchar(100)
 
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS events(
     eventLocation varchar(255),
     eventDate DATETIME,
     eventYear INT,
-    posterLink TEXT,
+    posterLink VARCHAR(500),
     FOREIGN KEY(eventYear)
     REFERENCES generations(id)
 );
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS blogPosts(
     body TEXT,
     writtenBy INT,
     postedOn DATETIME,
-    posterLink TEXT,
+    posterLink VARCHAR(500),
 
     FOREIGN KEY(writtenBy)
     REFERENCES members(id)
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS blogPosts(
 CREATE TABLE IF NOT EXISTS blogComments(
     id int AUTO_INCREMENT PRIMARY KEY,
     postID int,
-    commentText TEXT,
+    commentText VARCHAR(255),
     writtenBy int,
     postedOn DATETIME,
     FOREIGN KEY(writtenBy)
@@ -108,6 +108,87 @@ CREATE TABLE IF NOT EXISTS blogComments(
     FOREIGN KEY(postID)
     REFERENCES blogPosts(id)
 
+);
+
+CREATE TABLE IF NOT EXISTS talksvideos(
+    id int AUTO_INCREMENT PRIMARY KEY,
+    videoLink VARCHAR(500)
+);
+
+CREATE TABLE IF NOT EXISTS categories(
+    id int AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(30)
+);
+
+insert into `categories`(`title`)
+values
+("Technology"),
+("Phsychology"),
+("Education"),
+("Design"),
+("Other");
+
+CREATE TABLE IF NOT EXISTS videocategories(
+    id int AUTO_INCREMENT PRIMARY KEY,
+    videoID int,
+    categoryID int,
+    FOREIGN KEY(videoID)
+    REFERENCES talksvideos(id),
+    FOREIGN KEY(categoryID)
+    REFERENCES categories(id)
+);
+
+CREATE TABLE IF NOT EXISTS statusofapplications(
+    id int AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(20)
+);
+
+insert into `statusofapplications`(`title`)
+values
+("No Decision Yet"),
+("Accepted"),
+("On Hold"),
+("Rejected"),
+("Other");
+
+CREATE TABLE IF NOT EXISTS speakersapplications(
+    id into AUTO_INCREMENT PRIMARY KEY,
+    firstName VARCHAR(50) DEFAULT 'John',
+    lastName VARCHAR(50) DEFAULT 'Doe',
+    photo VARCHAR(500),
+    mobileNumber VARCHAR(11),
+    email varchar(100),
+    topic VARCHAR(500),
+    innovativeApproach VARCHAR(1000),
+    linkForMaterial VARCHAR(500),
+    applicationStatus INT DEFAULT 1,
+    createdOn DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(applicationStatus)
+    REFERENCES statusofapplications(id)
+);
+
+CREATE TABLE IF NOT EXISTS speakers(
+    id into AUTO_INCREMENT PRIMARY KEY,
+    firstName VARCHAR(50) DEFAULT 'John',
+    lastName VARCHAR(50) DEFAULT 'Doe',
+    photo VARCHAR(500),
+    mobileNumber VARCHAR(11),
+    email varchar(100),
+    topic VARCHAR(500),
+    innovativeApproach VARCHAR(1000),
+    linkForMaterial VARCHAR(500),
+    createdOn DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS speakereventrelation(
+    id int AUTO_INCREMENT PRIMARY KEY,
+    speakerID int,
+    eventID int,
+    speakerRole varchar(20), #Host or speaker.
+    FOREIGN KEY(speakerID)
+    REFERENCES speakers(id),
+    FOREIGN KEY(eventID)
+    REFERENCES events(id)
 );
 
 #WIP: Based on proposed questions for application and past applications.

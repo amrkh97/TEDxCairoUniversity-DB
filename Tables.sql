@@ -152,7 +152,7 @@ values
 ("Other");
 
 CREATE TABLE IF NOT EXISTS speakersapplications(
-    id into AUTO_INCREMENT PRIMARY KEY,
+    id int AUTO_INCREMENT PRIMARY KEY,
     firstName VARCHAR(50) DEFAULT 'John',
     lastName VARCHAR(50) DEFAULT 'Doe',
     photo VARCHAR(500),
@@ -168,7 +168,7 @@ CREATE TABLE IF NOT EXISTS speakersapplications(
 );
 
 CREATE TABLE IF NOT EXISTS speakers(
-    id into AUTO_INCREMENT PRIMARY KEY,
+    id int AUTO_INCREMENT PRIMARY KEY,
     firstName VARCHAR(50) DEFAULT 'John',
     lastName VARCHAR(50) DEFAULT 'Doe',
     photo VARCHAR(500),
